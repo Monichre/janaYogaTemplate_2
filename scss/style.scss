@@ -1,0 +1,787 @@
+@import '../bourbon/bourbon'; // http://bourbon.io/
+
+@import '../partials/variables'; // colors, fonts etc...
+
+@import '../partials/mixins'; // custom mixins
+
+@import '../partials/layout'; // responsive grid and media queries
+
+/* --------------------------------
+
+Primary style
+
+-------------------------------- */
+
+*, *::after, *::before {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	font: {
+		size: 1.6rem;
+		family: $primary-font; // variables inside partials > _variables.scss
+	}
+	color: $color-2;
+	background-color: #fff;
+	@include font-smoothing;
+}
+
+a {
+	color: $color-4;
+	text-decoration: none;
+}
+
+.cd-image-replace {
+	/* replace text with image */
+	display: inline-block;
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	color: transparent;
+}
+
+// Custom fonts
+@font-face {
+    font-family: 'Ginva';
+    src: url('../fonts/Ginva.ttf');
+}
+@font-face {
+    font-family: 'Voga';
+    src: url('../fonts/voga-medium.otf');
+}
+/* --------------------------------
+
+Navigation trigger - visible on small devices only
+
+-------------------------------- */
+
+.cd-nav-trigger {
+	display: block;
+	position: fixed;
+	z-index: 2;
+	bottom: 30px;
+	right: 5%;
+	height: 44px;
+	width: 44px;
+	@include border-radius;
+	background: rgba($color-2, .9);
+
+	/* reset button style */
+	cursor: pointer;
+	@include appearance(none);
+	border: none;
+	outline: none;
+
+	span {
+		/* central dot */
+		position: absolute;
+		height: 4px;
+		width: 4px;
+		background-color: $color-1;
+		border-radius: 50%;
+		@include center;
+
+		&::before, &::after {
+			/* bottom and top dots */
+			content: '';
+			position: absolute;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background-color: $color-1;
+			border-radius: inherit;
+		}
+
+		&::before {
+			top: -9px;
+		}
+
+		&::after {
+			bottom: -9px;
+		}
+	}
+
+	@include MQ(M) {
+		display: none;
+	}
+}
+
+/* --------------------------------
+
+Vertical navigation
+
+-------------------------------- */
+
+.cd-vertical-nav {
+	position: fixed;
+	z-index: 1;
+	right: 5%;
+	bottom: 30px;
+	width: 90%;
+	max-width: 400px;
+	max-height: 90%;
+	overflow-y: auto;
+	@include transform(scale(0));
+	@include transform-origin(right bottom);
+	@include transition(transform .2s);
+	@include border-radius;
+	background-color: #fff;
+	z-index: 1001;
+
+	a {
+		display: block;
+		padding: 1em;
+		color: #fff;
+		font-weight: bold;
+		border-bottom: 1px solid rgba($color-1, .1);
+
+		&.active {
+			color: $color-4;
+		}
+	}
+
+	&.open {
+		@include transform(scale(1));
+		-webkit-overflow-scrolling: touch;
+	}
+
+	&.open + .cd-nav-trigger {
+		background-color: transparent;
+
+		span {
+			background-color: rgba($color-1, 0);
+		}
+
+		span::before, span::after {
+			/* transform dots in 'X' icon */
+			height: 3px;
+			width: 20px;
+			border-radius: 0;
+			left: -8px;
+		}
+
+		span::before {
+			@include transform(rotate(45deg));
+			top: 1px;
+		}
+
+		span::after {
+			@include transform(rotate(135deg));
+			bottom: 0;
+		}
+	}
+
+	@include MQ(M) {
+		/* reset style */
+		right: 0;
+		top: 0;
+		bottom: auto;
+		height: 100vh;
+		width: 90px;
+		max-width: none;
+		max-height: none;
+		@include transform(scale(1));
+		background-color: transparent;
+		/* vertically align its content*/
+		display: table;
+
+		&::before {
+			/* this is the navigation background */
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba($color-3, .8);
+			@include transform(translateX(100%));
+			@include transition(transform .4s);
+		}
+
+		.no-touch &:hover::before,
+		.touch &::before {
+			@include transform(translateX(0));
+		}
+
+		ul {
+			/* vertically align <ul> inside <nav>*/
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+		}
+
+		a {
+			position: relative;
+			padding: 3em 0 0;
+			margin: 1.4em auto;
+			border-bottom: none;
+			font-size: 1.2rem;
+			color: #fff;
+
+			&.active {
+				color: #fff;
+			}
+
+			&::before, &::after {
+				/* used to create the filled circle and the background icon */
+				content: '';
+				position: absolute;
+				left: 50%;
+				/* Force Hardware Acceleration */
+				@include backface-visibility(hidden);
+				@include transform(translateZ(0));
+				background: #fff;
+			}
+
+			&::before {
+				/* filled circle */
+				top: 0;
+				height: 32px;
+				width: 32px;
+				border-radius: 50%;
+				background: #333;
+				@include transform(translateX(-50%) scale(.25));
+				@include transition(transform .4s, background-color .2s);
+			}
+
+			&::after {
+				/* icon */
+				opacity: 0;
+				top: 8px;
+				height: 16px;
+				width: 16px;
+				background: url(../img/cd-nav-icons.svg) no-repeat;
+
+				@include transform(translateX(-50%) scale(0));
+				@include transition(transform .4s 0s, opacity .1s .3s);
+			}
+
+			&.active::before,
+			.no-touch &:hover::before {
+				background-color: $color-4;
+			}
+		}
+
+		li:first-of-type a::after {
+			/* change icon using image sprites */
+			background-position: 0px -48px;
+			/* fix bug with transitions - set scale(0.01) rather than scale(0) */
+			@include transform(translateX(-50%) translateY(4.5em) scale(0.01));
+		}
+
+		li:first-of-type a::before {
+			@include transform(translateX(-50%) translateY(4.5em) scale(.25));
+		}
+
+		li:nth-of-type(2) a::after {
+			background-position: 0px -32px;
+			@include transform(translateX(-50%) translateY(1.5em) scale(0.01));
+		}
+
+		li:nth-of-type(2) a::before {
+			@include transform(translateX(-50%) translateY(1.5em) scale(.25));
+		}
+
+		li:nth-of-type(3) a::after {
+			background-position: 0px -16px;
+			@include transform(translateX(-50%) translateY(-1.5em) scale(0.01));
+		}
+
+		li:nth-of-type(3) a::before {
+			@include transform(translateX(-50%) translateY(-1.5em) scale(.25));
+		}
+
+		li:nth-of-type(4) a::after {
+			background-position: 0px 0px;
+			@include transform(translateX(-50%) translateY(-4.5em) scale(0.01));
+		}
+
+		li:nth-of-type(4) a::before {
+			@include transform(translateX(-50%) translateY(-4.5em) scale(.25));
+		}
+		li:nth-of-type(5) a::after {
+			background-position: 0px 0px;
+			@include transform(translateX(-50%) translateY(-4.5em) scale(0.01));
+		}
+
+		li:nth-of-type(5) a::before {
+			@include transform(translateX(-50%) translateY(-8.5em) scale(.25));
+		}
+		li:nth-of-type(6) a::after {
+			background-position: 0px 0px;
+			@include transform(translateX(-50%) translateY(-4.5em) scale(0.01));
+		}
+
+		li:nth-of-type(6) a::before {
+			@include transform(translateX(-50%) translateY(-11.5em) scale(.25));
+		}
+		li:nth-of-type(7) a::after {
+			background-position: 0px 0px;
+			@include transform(translateX(-50%) translateY(-4.5em) scale(0.01));
+		}
+
+		li:nth-of-type(7) a::before {
+			@include transform(translateX(-50%) translateY(-14.5em) scale(.25));
+		}
+
+		.label {
+			display: block;
+			/* Force Hardware Acceleration */
+			@include backface-visibility(hidden);
+			@include transform(translateZ(0));
+			@include transform(translateX(100%));
+			@include transition(transform .4s);
+		}
+
+		.no-touch &:hover a::before,
+		.no-touch &:hover a::after,
+		.touch & li:nth-of-type(n) a::before,
+		.touch & li:nth-of-type(n) a::after {
+			@include transform(translateX(-50%) scale(1));
+			/* set a rotation to fix bug on Firefox - http://gielberkers.com/how-to-fix-shaking-css-transitions-in-firefox/ */
+			-moz-transform: translateX(-50%) scale(1) rotate(0.02deg);
+		}
+
+		.no-touch &:hover a::after,
+		.touch & a::after {
+			opacity: 1;
+			@include transition(transform .4s, opacity 0s);
+		}
+
+		.no-touch &:hover .label,
+		.touch & .label {
+			@include transform(translateX(0));
+		}
+	}
+}
+
+.cd-vertical-nav:hover a::before {
+	background: #fff;
+}
+
+
+/* --------------------------------
+
+	Header Styles // Social Nav
+
+-------------------------------- */
+
+.header-container {
+	position: fixed;
+
+	width: 100%;
+	z-index: 1002;
+	// background: #fff;
+
+	.site-title {
+		background: #fff;
+		padding-top: 10px;
+		padding-left: 20px;
+		font-family: 'Moon';
+		font-size: 2em;
+		color: #333;
+		font-family: 'Anton', sans-serif!important;
+
+		-vendor-animation-duration: 6s;
+	    -vendor-animation-delay: 3s;
+	}
+	.social {
+		padding-left: 20px;
+		margin-top: 20px;
+		// position: absolute;
+		// right: 100px;
+		// top: 10px;
+
+		li {
+			display: inline-block;
+			padding: 10px;
+			color: #333!important;
+			font-size: 20px;
+
+			a {
+				color: inherit;
+			}
+		}
+	}
+}
+
+/* --------------------------------
+
+Content Sections - basic style
+
+-------------------------------- */
+
+
+
+
+
+// # -- section Fonts
+
+@font-face {
+    font-family: 'Ginva';
+    src: url('../fonts/Ginva.ttf');
+}
+@font-face {
+    font-family: 'Voga';
+    src: url('../fonts/voga-medium.otf');
+}
+@font-face {
+    font-family: 'Noway';
+    src: url('../fonts/noway.ttf');
+}
+@font-face {
+    font-family: 'Moon';
+    src: url('../fonts/Moon.otf');
+}
+@font-face {
+    font-family: 'Moon-bold';
+    src: url('../fonts/Moon-bold.otf');
+}
+@font-face {
+    font-family: 'Giraffey';
+    src: url('../fonts/Giraffey.otf');
+}
+
+
+/* ---------------------------------------------------------------------
+
+				General Section Styles
+
+--------------------------------------------------------------------- */
+
+
+#section1 {
+	// background: url(../img/IMG_1893.JPG);
+}
+#section2 {
+	// background: url(../img/IMG_1894.JPG);
+	// background: url(../img/IMG_1899.JPG);
+background: url(../img/IMG_1897.JPG);
+// background: url(../img/IMG_1891.JPG);
+// background: url(../img/IMG_1892.JPG);
+// background: url(../img/IMG_1902.JPG);
+}
+#section3 {
+	// background: url(../img/IMG_1899.JPG);
+}
+#section4 {
+	// background: url(../img/IMG_1897.JPG);
+}
+#section5 {
+	// background: url(../img/IMG_1891.JPG);
+}
+#section6 {
+	// background: url(../img/IMG_1892.JPG);
+}
+#section7 {
+	// background: url(../img/IMG_1902.JPG);
+}
+
+
+#section1, #section2, #section3, #section4, #section5, #section6, #section7 {
+	background-size: cover;
+	background-position: center;
+	// -webkit-filter: grayscale(100%);
+	// filter: gray;
+	background-attachment: fixed;
+	position: relative;
+}
+
+.cd-section {
+	/* vertically align its content*/
+	display: table;
+	width: 100%;
+	height: 100vh;
+	position: relative;
+	color: #333;
+
+	> div {
+		/* vertically align <div> inside <section> */
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+	}
+
+
+	.content-wrapper {
+		position: relative;
+		z-index: 1000;
+	}
+
+	.section-title {
+		font-family: 'Playfair Display', serif;
+		// color: #333;
+		font-size: 3.5rem;
+		margin: 30px;
+	}
+	.flourish {
+		font-family: 'Playfair Display', serif;
+		font-size: 2em;
+	}
+
+	h1 {
+		width: 90%;
+		margin: 0 auto;
+		text-transform: uppercase;
+		font-size: 4rem;
+
+		b {
+
+		}
+	}
+
+	p {
+		margin: 1em auto 0;
+		line-height: 1.5;
+		letter-spacing: 2px;
+		width: 90%;
+		max-width: 680px;
+		// font-family: "Futura LT";
+		text-align: justify;
+		// color: #333;
+
+		a {
+			color: inherit;
+		}
+	}
+
+	@include MQ(M) {
+
+		h1, h2 {
+			font-size: 4rem;
+			letter-spacing: 2.5px
+		}
+
+		p {
+			font-size: 1.4rem;
+			// text-transform: uppercase;
+		}
+	}
+}
+
+
+/* ---------------------------------------------------------------------
+
+# -- section 1
+
+--------------------------------------------------------------------- */
+#section1 {
+
+	.overlay-bg {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background: rgba(0,0,0,.5);
+		border: 70px solid #fff;
+		// border-left: 70px solid #fff;
+		// border-right: 70px solid #fff;
+		// border-bottom: none;
+	}
+	.text-content {
+		height: 390px;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.img-container {
+		max-height: 500px;
+		height: 100%;
+
+		img {
+			height: 100%;
+			width: 100%;
+		}
+	}
+	.site-quote {
+		// color: #A29CA2;
+		color: #333;
+		font-family: 'Playfair Display', serif!important;
+
+		letter-spacing: 2px;
+		width: max-content!important;
+		line-height: normal;
+		margin: auto;
+		display: block;
+		// border-bottom: 5px solid #333;
+		position: relative;
+		-vendor-animation-duration: 6s;
+	    -vendor-animation-delay: 3s;
+		line-height: 80px;
+
+		.t {
+			font-size: 2.5em;
+		}
+
+		.there {
+			font-size: 1.75em!important;
+		}
+		.are {
+			font-size: 1.75em!important;
+			padding-left: 50px;
+			border-left: 5px solid #333;
+		}
+		.hundreds {
+			font-size: 4em!important;
+			// font-family: 'Open Sans Condensed', sans-serif;
+			font-family: 'Anton', sans-serif!important;
+			color: #70557e!important;
+
+			.s {
+				font-size: .5em!important;
+			}
+		}
+
+	}
+	.hundred-header {
+		position: absolute;
+		top: -20%;
+		left: -15%;
+	}
+	.the-rest {
+		font-size: 2em!important;
+		font-family: 'Playfair Display', serif!important;
+		margin: auto;
+		text-align: center;
+		border-right: 5px solid #333;
+	}
+
+	.squares {
+		padding: 0!important;
+		position: relative;
+	}
+
+
+}
+
+
+
+
+
+/* -------------
+
+# -- section 2 About
+
+---------------- */
+#section2 {
+
+
+	.overlay-bg {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background: rgba(0,0,0,.5);
+		// border: 70px solid #fff;
+		// border-left: 70px solid #fff;
+		// border-right: 70px solid #fff;
+		// border-bottom: none;
+	}
+	.content-wrapper {
+		position: relative;
+		z-index: 1000;
+		color: #fff!important;
+	}
+
+}
+
+
+/* -------------
+
+# -- section 3 Classes
+
+---------------- */
+#section3 {
+	text-align: center;
+	p {
+		margin-bottom: 20px;
+		text-align: center;
+	}
+	#yoga-calendar {
+		width: 75%;
+		margin: auto;
+		display: block;
+	}
+}
+
+/* -------------
+
+# -- section 7
+
+---------------- */
+
+#section7.connect {
+	.content-wrapper {
+		p {
+			text-align: center;
+		}
+	}
+}
+
+
+.cd-scroll-down {
+	position: absolute;
+	@include center(x);
+	bottom: 20px;
+	width: 44px;
+	height: 44px;
+	background: url(../img/cd-arrow-bottom.svg) no-repeat center center;
+}
+
+/* --------------------------------
+
+no-js
+
+-------------------------------- */
+
+.no-js .cd-nav-trigger {
+	display: none;
+}
+
+.no-js .cd-vertical-nav {
+	position: static;
+	height: auto;
+	width: 100%;
+	max-width: none;
+	background-color: #fff;
+	border-radius: 0;
+	@include transform(scale(1));
+
+	&::before {
+		display: none;
+	}
+
+	ul {
+		@include clearfix;
+	}
+
+	li {
+		display: inline-block;
+		float: left;
+	}
+
+	a {
+		padding: 0 1em;
+		margin: 1.5em 1em;
+		color: #fff;
+
+		&.active {
+			color: $color-4;
+		}
+	}
+
+	a::after, a::before {
+		display: none;
+	}
+
+	.label {
+		@include transform(translateX(0));
+	}
+}
