@@ -406,11 +406,13 @@ Vertical navigation
   width: 100%;
   z-index: 1002; }
   .header-container .site-title {
+    background: #fff;
     padding-top: 10px;
     padding-left: 20px;
-    font-family: "Playfair Display", serif;
+    font-family: 'Moon';
     font-size: 2em;
     color: #333;
+    font-family: "Anton", sans-serif !important;
     -vendor-animation-duration: 6s;
     -vendor-animation-delay: 3s; }
   .header-container .social {
@@ -499,6 +501,7 @@ Content Sections - basic style
       color: inherit; }
   @media only screen and (min-width: 800px) {
     .cd-section h1, .cd-section h2 {
+      font-size: 4rem;
       letter-spacing: 2.5px; }
     .cd-section p {
       font-size: 1.4rem; } }
@@ -508,16 +511,6 @@ Content Sections - basic style
 # -- section 1
 
 --------------------------------------------------------------------- */
-#section1 .content-wrapper {
-  position: relative; }
-#section1 .overlay-jana {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: url(../img/bg.png), #fff;
-  opacity: .8; }
 #section1 .img-container {
   max-height: 500px;
   height: 100%; }
@@ -528,26 +521,30 @@ Content Sections - basic style
   color: #333;
   font-family: "Playfair Display", serif !important;
   letter-spacing: 2px;
+  width: max-content !important;
   line-height: normal;
-  width: 50%;
   margin: auto;
   display: block;
   position: relative;
   -vendor-animation-duration: 6s;
   -vendor-animation-delay: 3s;
-  text-align: justify; }
+  line-height: 80px; }
   #section1 .site-quote .t {
-    font-size: 2.25em; }
+    font-size: 2.5em; }
   #section1 .site-quote .there {
-    font-size: 1.5em !important;
-    line-height: 80px; }
+    font-size: 1.75em !important; }
+  #section1 .site-quote .are {
+    font-size: 1.75em !important; }
   #section1 .site-quote .hundreds {
-    font-size: 2.5em !important; }
+    font-size: 3em !important; }
     #section1 .site-quote .hundreds .s {
       font-size: 0.5em !important; }
   #section1 .site-quote .the-rest {
-    padding-left: 100px;
-    font-family: "Playfair Display", serif !important; }
+    font-size: 2em !important;
+    font-family: "Playfair Display", serif !important;
+    margin: auto;
+    text-align: center;
+    border-right: 5px solid #333; }
 
 /* -------------
 
@@ -647,4 +644,4 @@ no-js
     -o-transform: translateX(0);
     transform: translateX(0); }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=css.map */

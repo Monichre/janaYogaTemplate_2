@@ -378,13 +378,13 @@ Vertical navigation
 	// background: #fff;
 
 	.site-title {
-		background: #fff;
+
 		padding-top: 10px;
 		padding-left: 20px;
-		font-family: 'Moon';
+		font-family: "Playfair Display", serif;
 		font-size: 2em;
 		color: #333;
-		font-family: 'Anton', sans-serif!important;
+
 
 		-vendor-animation-duration: 6s;
 	    -vendor-animation-delay: 3s;
@@ -552,7 +552,7 @@ background: url(../img/IMG_1897.JPG);
 	@include MQ(M) {
 
 		h1, h2 {
-			font-size: 4rem;
+			// font-size: 4rem;
 			letter-spacing: 2.5px
 		}
 
@@ -571,24 +571,17 @@ background: url(../img/IMG_1897.JPG);
 --------------------------------------------------------------------- */
 #section1 {
 
-	.overlay-bg {
+	.content-wrapper {
+		position: relative;
+	}
+	.overlay-jana {
 		position: absolute;
 		height: 100%;
 		width: 100%;
 		top: 0;
 		left: 0;
-		background: rgba(0,0,0,.5);
-		border: 70px solid #fff;
-		// border-left: 70px solid #fff;
-		// border-right: 70px solid #fff;
-		// border-bottom: none;
-	}
-	.text-content {
-		height: 390px;
-
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		background: url(../img/bg.png), #fff;
+		opacity: .8;
 	}
 	.img-container {
 		max-height: 500px;
@@ -600,63 +593,41 @@ background: url(../img/IMG_1897.JPG);
 		}
 	}
 	.site-quote {
-		// color: #A29CA2;
 		color: #333;
 		font-family: 'Playfair Display', serif!important;
-
 		letter-spacing: 2px;
-		width: max-content!important;
 		line-height: normal;
+		width: 50%;
 		margin: auto;
 		display: block;
 		// border-bottom: 5px solid #333;
 		position: relative;
 		-vendor-animation-duration: 6s;
 	    -vendor-animation-delay: 3s;
-		line-height: 80px;
+		text-align: justify;
 
 		.t {
-			font-size: 2.5em;
+			font-size: 2.25em;
 		}
 
 		.there {
-			font-size: 1.75em!important;
+			font-size: 1.5em!important;
+			line-height: 80px;
 		}
-		.are {
-			font-size: 1.75em!important;
-			padding-left: 50px;
-			border-left: 5px solid #333;
-		}
+
 		.hundreds {
-			font-size: 4em!important;
-			// font-family: 'Open Sans Condensed', sans-serif;
-			font-family: 'Anton', sans-serif!important;
-			color: #70557e!important;
+			font-size: 2.5em!important;
 
 			.s {
 				font-size: .5em!important;
 			}
 		}
+		.the-rest {
+			padding-left: 100px;
+			font-family: 'Playfair Display', serif!important;
+		}
 
 	}
-	.hundred-header {
-		position: absolute;
-		top: -20%;
-		left: -15%;
-	}
-	.the-rest {
-		font-size: 2em!important;
-		font-family: 'Playfair Display', serif!important;
-		margin: auto;
-		text-align: center;
-		border-right: 5px solid #333;
-	}
-
-	.squares {
-		padding: 0!important;
-		position: relative;
-	}
-
 
 }
 
